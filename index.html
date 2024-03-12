@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Title</title>
+    <style>
+        .title {
+            font-size: 36px;
+        }
+        .bold {
+            font-weight: bold;
+        }
+        .bold-italic {
+            font-style: italic;
+            font-weight: bold;
+        }
+        .menu {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        .menu-item {
+            margin-bottom: 10px;
+        }
+        .dropdown {
+            margin-top: 10px;
+        }
+        .choices {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .choice {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .choice:first-child {
+            margin-right: 0;
+        }
+        .quantity-input {
+            margin-top: 10px;
+        }
+        .payment-input {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">Welcome to the canteen! Here are our street foods menu.</h1>
+    <p><span class="bold">Prices are shown below.</span><span class="bold-italic">Click finalize order once you're done with your orders.</span></p>
+    <ul class="menu">
+        <li class="menu-item">• Burger - 60 pesos</li>
+        <li class="menu-item">• Fries - 50 pesos</li>
+        <li class="menu-item">• Fishbol - 20 pesos</li>
+        <li class="menu-item">• Kikiam - 25 pesos</li>
+    </ul>
+
+    <button class="button" onclick="addFoodItem()">Add a food item</button>
+    <div class="choices" id="choices">
+        <div class="choice">
+            <p>Choice:</p>
+        </div>
+        <div class="choice">
+            <div class="dropdown">
+                <select>
+                    <option value="burger">Burger</option>
+                    <option value="fries">Fries</option>
+                    <option value="fishbol">Fishbol</option>
+                    <option value="kikiam">Kikiam</option>
+                </select>
+            </div>
+            <div class="quantity-input">
+                <label for="quantity">Quantity:</label>
+                <input type="number" class="quantity" name="quantity" min="1" value="1">
+            </div>
+        </div>
+    </div>
+
+    <button class="button" onclick="finalizeOrder()">Finalize Order</button>
+
+    <!-- Payment Section -->
+    <div class="payment-input">
+        <label for="cash">Cash:</label>
+        <input type="number" id="cash" name="cash" min="0" value="0">
+        <button class="button" onclick="pay()">Pay!</button>
+    </div>
+
+    <script>
+        function addFoodItem() {
+            var choicesDiv = document.getElementById("choices");
+            var newChoiceDiv = document.createElement("div");
+            newChoiceDiv.classList.add("choice");
+            newChoiceDiv.innerHTML = `<div class='dropdown'><select><option value='burger'>Burger</option><option value='fries'>Fries</option><option value='fishbol'>Fishbol</option><option value='kikiam'>Kikiam</option></select></div>
+                                      <div class='quantity-input'><label for='quantity'>Quantity:</label><input type='number' class='quantity' name='quantity' min='1' value='1'></div>`;
+            choicesDiv.appendChild(newChoiceDiv);
+        }
+
+        function finalizeOrder() {
+            var totalAmount = 0;
+            var quantities = document.querySelectorAll('.quantity');
+            var choices = document.querySelectorAll('.dropdown select');
+
+            for (var i = 0; i < quantities.length; i++) {
+                var quantity = parseInt(quantities[i].value);
+                var choice = choices[i].value;
+
+                switch (choice) {
+                    case 'burger':
+                        totalAmount += quantity * 60;
+                        break;
+                    case 'fries':
+                        totalAmount += quantity * 50;
+                        break;
+                    case 'fishbol':
+                        totalAmount += quantity * 20;
+                        break;
+                    case 'kikiam':
+                        totalAmount += quantity * 25;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            alert("Total Amount: " + totalAmount + " pesos");
+        }
+
+        function pay() {
+            var cash = parseInt(document.getElementById("cash").value);
+            var totalAmount = 0;
+            var quantities = document.querySelectorAll('.quantity');
+            var choices = document.querySelectorAll('.dropdown select');
+
+            for (var i = 0; i < quantities.length; i++) {
+                var quantity = parseInt(quantities[i].value);
+                var choice = choices[i].value;
+
+                switch (choice) {
+                    case 'burger':
+                        totalAmount += quantity * 60;
+                        break;
+                    case 'fries':
+                        totalAmount += quantity * 50;
+                        break;
+                    case 'fishbol':
+                        totalAmount += quantity * 20;
+                        break;
+                    case 'kikiam':
+                        totalAmount += quantity * 25;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            var change = cash - totalAmount;
+            if (change >= 0) {
+                alert("Change: " + change + " pesos");
+            } else {
+                alert("Insufficient cash!");
+            }
+        }
+    </script>
+</body>
+</html>
